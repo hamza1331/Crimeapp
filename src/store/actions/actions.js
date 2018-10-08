@@ -1,8 +1,8 @@
 import { 
     login,
-    logout
+    logout,
+    insertCrime
 } from "./actionNames";
-
 
 
 export function LoginAction(username){
@@ -10,6 +10,14 @@ export function LoginAction(username){
         dispatch({
             type:login,
             payload:username
+        })
+    }
+}
+export function insertCrimeAction(crime){
+    return dispatch=>{
+        dispatch({
+            type:insertCrime,
+            payload:crime
         })
     }
 }

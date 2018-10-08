@@ -10,7 +10,6 @@
     "eslint-plugin-react": "^7.11.1",
     "firebase": "^5.5.3",
     "history": "^4.7.2",
-    "mdbreact": "^4.8.0",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-logger": "^1.1.0",
