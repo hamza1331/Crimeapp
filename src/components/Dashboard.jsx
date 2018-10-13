@@ -26,7 +26,7 @@ export default class CardComponent extends Component {
           <div className="row">
             <div className="col-md-3">
               <article className="card">
-                <img style={{ maxHeight: 400, width: '100%' }} src='https://pixabay.com/get/ea36b4072cf2093ed1534705fb0938c9bd22ffd41cb2184197f9c27ba6/dawn-3358468_1920.jpg' alt="Sample photo" />
+                <img style={{ maxHeight: 400, width: '100%' }} src='https://images.unsplash.com/photo-1539239601483-f4d03f6ccafa?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=5bdb9cb4074ab2aba36249e2e38e9233&auto=format&fit=crop&w=1500&q=80' alt="Sample photo" />
                 <div className="text">
                   <h3 style={{ fontWeight: 'bolder' }}>CRIME REPORTS</h3>
                   <h3>DESCRIPTION GOES HERE...</h3>
@@ -37,7 +37,7 @@ export default class CardComponent extends Component {
             <div className="col-md-1"></div>
             <div className="col-md-3">
               <article className="card">
-                <img style={{ maxHeight: 400, width: '100%' }} src='https://pixabay.com/get/ea36b70b2ff11c22d9584518a33219c8b66ae3d01ab811439cf4c67c/new-york-city-336475_1920.jpg' alt="Sample photo" />
+                <img style={{ maxHeight: 400, width: '100%' }} src='https://images.unsplash.com/photo-1539201910954-e296265bbe50?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=ec7a913876bd136e02dd54a9a1538fd3&auto=format&fit=crop&w=1500&q=80' alt="Sample photo" />
                 <div className="text">
                   <h3 style={{ fontWeight: 'bolder' }}>COMPLAINTS</h3>
                   <h3>DESCRIPTION GOES HERE...</h3>
@@ -48,7 +48,7 @@ export default class CardComponent extends Component {
             <div className="col-md-1"></div>
             <div className="col-md-3">
               <article className="card">
-                <img style={{ maxHeight: 400, width: '100%' }} src='https://pixabay.com/get/ea33b6072afd033ed1534705fb0938c9bd22ffd41cb2184197f9c579a3/cobblestones-3678292_1920.jpg' alt="Sample photo" />
+                <img style={{ maxHeight: 400, width: '100%' }} src='https://images.unsplash.com/photo-1499377193864-82682aefed04?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=71c8f98090468daa45a13fe3e5785571&auto=format&fit=crop&w=1522&q=80' alt="Sample photo" />
                 <div className="text">
                   <h3 style={{ fontWeight: 'bolder' }}>MISSING PERSONS</h3>
                   <h3>DESCRIPTION GOES HERE...</h3>

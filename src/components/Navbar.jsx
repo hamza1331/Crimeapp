@@ -8,6 +8,7 @@ class Navbar extends Component {
         this.handleHomeLink = this.handleHomeLink.bind(this)
         this.handleLogout = this.handleLogout.bind(this)
         this.handleDashboardLink = this.handleDashboardLink.bind(this)
+        this.googleSignIn = this.googleSignIn.bind(this)
 
     }
 componentWillMount(){
@@ -48,7 +49,7 @@ handleDashboardLink(e){
         firebase.auth().signInWithPopup(provider).then((result)=>{
            var token = result.credential.accessToken;
            var user = result.user;
-           this.props.Login(user.displayName)
+           this.props.Login(user.uid)
             this.props.history.push('/Dashboard')
         }).catch(function(error) {
            var errorCode = error.code;
@@ -67,7 +68,7 @@ handleDashboardLink(e){
           <ul className="nav navbar-nav navbar-right">
           {this.props.isLoggedIn && window.location.pathname!=='/Dashboard'&& <li><a href="#" onClick={this.handleDashboardLink}>Dashboard</a></li>}
             {(this.props.isLoggedIn) && <button onClick={this.handleLogout} className="btn btn-danger navbar-btn">LOG OUT</button>}
-            {(!this.props.isLoggedIn) && <button onClick={()=>{this.googleSignIn()}} className="btn btn-info navbar-btn">LOGIN</button>}
+            {(!this.props.isLoggedIn) && <button onClick={this.googleSignIn} className="btn btn-info navbar-btn">LOGIN</button>}
           </ul>
         </div>
       </nav>
@@ -86,8 +87,8 @@ function mapActionsToProps(dispatch){
         Logout:()=>{
             dispatch(LogoutAction())
         },
-        Login:(userName)=>{
-            dispatch(LoginAction(userName))
+        Login:(uid)=>{
+            dispatch(LoginAction(uid))
         }
     })
 }

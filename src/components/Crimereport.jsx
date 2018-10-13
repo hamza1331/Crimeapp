@@ -1,50 +1,117 @@
 import React, { Component } from 'react'
 import Navbar from './Navbar'
-import { insertCrimeAction } from "../store/actions/actions";
+import { insertCrimeAction, showCrimeAction, deleteCrimeAction } from "../store/actions/actions";
 import { connect } from "react-redux";
+import firebase from 'firebase'
+import CrimeModal from './CrimeModal'
+import Loading from './load.gif'
 class Crimereport extends Component {
-  constructor(props){
+  constructor(props) {
     super(props)
-    this.initialState={
-      name:'',
-      NIC:0,
-      contact:'',
-      address:'',
-      city:'',
-      victim:'',
-      description:'',
-      typeOfCrime:'default',
-      title:''
+    this.initialState = {
+      name: '',
+      NIC: 0,
+      contact: '',
+      address: '',
+      city: '',
+      victim: '',
+      description: '',
+      typeOfCrime: 'default',
+      title: '',
+      status: 'Pending',
+      showLoading:false,
+      crimeId:'crime' + Math.round(Math.random() * 100000)
     }
-    this.state={
+    this.state = {
       ...this.initialState
     }
-    this.handleChange=this.handleChange.bind(this)
-    this.handleSubmit=this.handleSubmit.bind(this)
-    this.handleRemove=this.handleRemove.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleRemove = this.handleRemove.bind(this)
+    this.showDetails = this.showDetails.bind(this)
   }
-  handleChange(e){
+  handleChange(e) {
     this.setState({
-      [e.target.name]:e.target.value
+      [e.target.name]: e.target.value
     })
   }
-  handleSubmit(e){
-    e.preventDefault()
-    this.props.insertCrime(this.state)
-    this.setState({
-      ...this.initialState
-    })
-    
+  componentDidMount() {
+    if (this.props.isLoggedIn) {
+      let firebaseRef = firebase.database().ref('userposts').child(this.props.uid)
+      firebaseRef.once('value', snap => {
+        const posts = snap.val()
+        posts.forEach(post => {
+          let dataRef = firebase.database().ref('crimes').child(post)
+          dataRef.once('value', snapshot => {
+            let crime = snapshot.val()
+            this.props.insertCrime(crime)
+          })
+        })
+      })
+    }
   }
-  handleRemove(e){
+  showDetails(e) {
     e.preventDefault()
-    console.log(e.target.id)
+    this.props.showCrime(e.target.id)
+  }
+  handleSubmit(e) {
+    e.preventDefault()
+    this.setState({
+      showLoading:true
+    })
+    let firebaseRef = firebase.database().ref('crimes').child(this.state.crimeId)
+    let sendData = this.state
+    delete sendData.showLoading
+    firebaseRef.set(sendData).then(() => {
+      let userRef = firebase.database().ref('userposts').child(this.props.uid)
+      userRef.once('value', (snap) => {
+        const data = snap.val()
+        if (data) {
+          let oldPosts = data
+          oldPosts.push(this.state.crimeId)
+          userRef.set(oldPosts).then(() => {
+            this.props.insertCrime(sendData)
+            this.setState({
+              ...this.initialState
+            })
+          })
+        }
+        else {
+          let newUserPosts = []
+          newUserPosts.push(this.state.crimeId)
+          userRef.set(newUserPosts).then(() => {
+            this.props.insertCrime(this.state)
+            this.setState({
+              ...this.initialState
+            })
+          })
+        }
+      })
+
+    }).catch(err => console.error(err))
+  }
+  handleRemove(e) {
+    e.preventDefault()
+    let crimeId = this.props.Crimes[e.target.id].crimeId
+    let firebaseRef = firebase.database().ref('crimes').child(crimeId)
+    firebaseRef.remove().then(() => {
+      let userRef = firebase.database().ref('userposts').child(this.props.uid)
+      userRef.once('value', snap => {
+        let data = snap.val()
+        let updatedData = data.filter((data) => {
+          return data!==crimeId
+        })
+        userRef.set(updatedData).then(() => {
+          this.props.deleteCrime(crimeId)
+        })
+      }).catch(err => console.error(err))
+    })
   }
   render() {
     return (
       <div>
         <Navbar history={this.props.history} /><br /><br /><br /><br />
-        <div className='container' style={{ marginTop: 15 }}>
+        {this.props.isLoggedIn && <div className='container' style={{ marginTop: 15 }}>
           <div className="row">
             <div className="col-md-6 card" style={{ padding: 20 }}>
               <h2 className='text-center'>CRIME REPORT</h2>
@@ -111,46 +178,60 @@ class Crimereport extends Component {
                 </div>
                 <div className="form-group">
                   <div className="col-sm-offset-2 col-sm-10">
-                    <button type="submit" className="btn btn-primary pull-right" onClick={this.handleSubmit}>Submit</button>
+                    {!this.state.showLoading && <button type="submit" className="btn btn-primary pull-right" onClick={this.handleSubmit}>Submit</button>}
+                    {this.state.showLoading && <button type='submit' className='btn btn-info pull-right'><img style={{width:"30%"}} src={Loading} alt="NOt found"/></button>}
                   </div>
                 </div>
               </form>
             </div>
             <div className="col-md-3"></div>
             <div className="col-md-3">
-            <ul className="list-group">
-            {this.props.Crimes.map((crime,index)=>{
-              return  <div 
-              key={index}>
-                 <li
-               className='list-group-item list-group-item-info'>
-               <a href="#" onClick={e=>e.preventDefault()}>{crime.title}</a>
-               <span className='pull-right'>
-               <button id={index} onClick={this.handleRemove} className='btn btn-xs btn-danger'> Delete</button>
-               </span>
-               </li><br/>
-              </div>
-            })}
-            </ul>
+              <h2 className='text-info' style={{ textAlign: 'center', textDecoration: 'underline' }}>CRIMES</h2>
+              <ul className="list-group">
+                {this.props.Crimes.map((crime, index) => {
+                  return <div
+                    key={index}>
+                    <li
+                      className='list-group-item list-group-item-info'>
+                      <a href="#" id={index} onClick={this.showDetails}>{crime.title}</a>
+                      <span className='pull-right'>
+                        <button id={index} onClick={this.handleRemove} className='btn btn-xs btn-danger'> Delete</button>
+                      </span>
+                    </li><br />
+                  </div>
+                })}
+              </ul>
             </div>
           </div>
-        </div>
+          <CrimeModal />
+        </div>}
+        {!this.props.isLoggedIn && <div><br /><br /><br />
+          <h2>User must login...</h2>
+
+        </div>}
       </div>
     )
   }
 }
-function mapStateToProps(state){
-  return({
-      isLoggedIn:state.rootReducer.isLoggedIn,
-      Crimes:state.rootReducer.crimes
+function mapStateToProps(state) {
+  return ({
+    isLoggedIn: state.rootReducer.isLoggedIn,
+    Crimes: state.rootReducer.crimes,
+    uid: state.rootReducer.uid
   })
 }
 
-function mapActionsToProps(dispatch){
-  return({
-      insertCrime:(crime)=>{
-        dispatch(insertCrimeAction(crime))
-      }
+function mapActionsToProps(dispatch) {
+  return ({
+    insertCrime: (crime) => {
+      dispatch(insertCrimeAction(crime))
+    },
+    showCrime: (crimeIndex) => {
+      dispatch(showCrimeAction(crimeIndex))
+    },
+    deleteCrime: (crimeId) => {
+      dispatch(deleteCrimeAction(crimeId))
+    }
   })
 }
-export default connect(mapStateToProps,mapActionsToProps)(Crimereport)
+export default connect(mapStateToProps, mapActionsToProps)(Crimereport)
