@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import Navbar from './Navbar'
-import { insertMissingPerson } from "../store/actions/actions";
+import { insertMissingPerson,showMissingAction,deleteMissingAction,countURLSAction } from "../store/actions/actions";
 import { connect } from "react-redux";
 import firebase from 'firebase';
 import Loading from './load.gif'
 import Compress from 'compress.js'
+import MissingModal from './MissingModal'
 class Missing extends Component {
   constructor(props) {
     super(props)
@@ -12,8 +13,6 @@ class Missing extends Component {
       name: '',
       NIC: 0,
       title: '',
-      contact: '',
-      address: '',
       city: '',
       missingpersonname: '',
       missingpersonheight: '',
@@ -21,6 +20,7 @@ class Missing extends Component {
       relationwiththeperson: '',
       contactiffound: '',
       placeofmissing: '',
+      status:'Pending',
       downlaodUrls: [],
       images: [],
       imageLinks: [],
@@ -37,6 +37,7 @@ class Missing extends Component {
     this.removePhoto = this.removePhoto.bind(this)
     this.handleDataUpload = this.handleDataUpload.bind(this)
     this.pictureUpload=this.pictureUpload.bind(this)
+    this.showMissingMethod=this.showMissingMethod.bind(this)
   }
   handleChange(e) {
     this.setState({
@@ -52,8 +53,8 @@ class Missing extends Component {
           posts.forEach(post => {
             let dataRef = firebase.database().ref('missing').child(post)
             dataRef.once('value', snapshot => {
-              let complain = snapshot.val()
-              this.props.insertMissingPerson(complain)
+              let missing = snapshot.val()
+              this.props.insertMissingPerson(missing)
             })
           })
         }
@@ -107,7 +108,7 @@ class Missing extends Component {
               //   console.log('Upload is paused');
               break;
             case firebase.storage.TaskState.RUNNING: // or 'running'
-              //   console.log('Upload is running');
+                console.log(progress);
               break;
               default:
               return
@@ -136,6 +137,7 @@ class Missing extends Component {
     delete sendData.imageLinks
     delete sendData.showImages
     delete sendData.images
+    sendData.userId=this.props.uid
     let firebaseRef = firebase.database().ref('missing').child(this.state.missingId)
     firebaseRef.set(sendData).then(() => {
       let userRef = firebase.database().ref('usermissingper').child(this.props.uid)
@@ -177,12 +179,41 @@ class Missing extends Component {
   }
   handleRemove(e) {
     e.preventDefault()
+    this.props.countURLS(e.target.id)
+    let missingId = this.props.missingPersons[e.target.id].missingId
+    let firebaseRef = firebase.database().ref('missing').child(missingId)
+    firebaseRef.remove().then(() => {
+      let userRef = firebase.database().ref('usermissingper').child(this.props.uid)
+      userRef.once('value', snap => {
+        let data = snap.val()
+        let updatedData = data.filter((data) => {
+          return data!==missingId
+        })
+        userRef.set(updatedData).then(() => {
+          for(let i=0;i<this.props.URLS;i++){
+            let imageRef = firebase.storage().ref(`missingPersons/${missingId}/${i}`)
+          imageRef.delete().then(()=>{
+            if(i===this.props.URLS-1){
+              this.props.deleteMissing(missingId)
+            }
+          }).catch(err=>console.error(err))
+          }
+        })
+      }).catch(err => console.error(err))
+    })
+  }
+  showMissingMethod(e){
+    e.preventDefault()
+    let missingDetails = {}
+    missingDetails.index = e.target.id
+    missingDetails.screen='missing'
+    this.props.showMissing(missingDetails)
   }
   render() {
     return (
       <div>
         <Navbar history={this.props.history} /><br /><br /><br /><br />
-        <div className='container' style={{ marginTop: 15 }}>
+      {this.props.isLoggedIn && <div className='container' style={{ marginTop: 15 }}>
           <div className="row">
             <div className="col-md-6 card" style={{ padding: 20 }}>
               <h2 className='text-center'>MISSING PERSON ENTRY</h2>
@@ -206,12 +237,6 @@ class Missing extends Component {
                   </div>
                 </div>
                 <div className="form-group">
-                  <label className="control-label col-sm-2" htmlFor="address">Address</label>
-                  <div className="col-sm-10">
-                    <input type="text" onChange={this.handleChange} value={this.state.address} autoComplete='off' className="form-control" id="name" placeholder="Enter Address" name="address" />
-                  </div>
-                </div>
-                <div className="form-group">
                   <label className="control-label col-sm-2" htmlFor="city">City</label>
                   <div className="col-sm-10">
                     <input type="text" onChange={this.handleChange} value={this.state.city} autoComplete='off' className="form-control" id="name" placeholder="Enter City" name="city" />
@@ -221,12 +246,6 @@ class Missing extends Component {
                   <label className="control-label col-sm-2" htmlFor="missingpersonname">Missing Person Name</label>
                   <div className="col-sm-10">
                     <input type="text" onChange={this.handleChange} value={this.state.missingpersonname} autoComplete='off' className="form-control" id="name" placeholder="Missing Person Name" name="missingpersonname" />
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label className="control-label col-sm-2" htmlFor="contact">Contact Number</label>
-                  <div className="col-sm-10">
-                    <input type="text" onChange={this.handleChange} value={this.state.contact} autoComplete='off' className="form-control" id="name" placeholder="Contact#" name="contact" />
                   </div>
                 </div>
                 <div className="form-group">
@@ -260,11 +279,11 @@ class Missing extends Component {
                   </div>
                 </div>
                 {this.state.showImages && this.state.imageLinks.map((imageLink, index) => {
-                  return <img onClick={this.removePhoto} id={index} key={index} style={{ margin: 5 }} width={150} height={100} src={imageLink} />
+                  return <img onClick={this.removePhoto} alt='nothing' id={index} key={index} style={{ margin: 5 }} width={150} height={100} src={imageLink} />
                 })}
                 <div className="form-group">
                   <div className="col-sm-offset-2 col-sm-10">
-                    <label htmlFor="Upload">Upload Pic Of missing person</label>
+                    <label htmlFor="Upload">Upload Pix Of missing person</label>
                     <input type="file" accept="image/*" multiple onClick={() => this.setState({ imageLinks: [] })} onChange={this.handlePhotos} />
                   </div>
                 </div>
@@ -286,7 +305,7 @@ class Missing extends Component {
                     key={index}>
                     <li
                       className='list-group-item list-group-item-info'>
-                      <a href="#" onClick={e => e.preventDefault()}>{missPerson.title}</a>
+                      <a href="#" id={index} onClick={this.showMissingMethod}>{missPerson.title}</a>
                       <span className='pull-right'>
                         <button id={index} onClick={this.handleRemove} className='btn btn-xs btn-danger'> Delete</button>
                       </span>
@@ -296,7 +315,12 @@ class Missing extends Component {
               </ul>
             </div>
           </div>
-        </div>
+          <MissingModal/>
+        </div>}
+        {!this.props.isLoggedIn&&<div>
+          <br/><br/><br/>
+          <h2>User Must Login</h2>
+        </div>}
       </div>
     )
   }
@@ -305,7 +329,8 @@ function mapStateToProps(state) {
   return ({
     isLoggedIn: state.rootReducer.isLoggedIn,
     missingPersons: state.rootReducer.missingPersons,
-    uid:state.rootReducer.uid
+    uid:state.rootReducer.uid,
+    URLS:state.rootReducer.URLS
   })
 }
 
@@ -313,6 +338,15 @@ function mapActionsToProps(dispatch) {
   return ({
     insertMissingPerson: (missPerson) => {
       dispatch(insertMissingPerson(missPerson))
+    },
+    showMissing:(missingIndex)=>{
+      dispatch(showMissingAction(missingIndex))
+    },
+    deleteMissing:(missingId)=>{
+      dispatch(deleteMissingAction(missingId))
+    },
+    countURLS:(missingIndex)=>{
+      dispatch(countURLSAction(missingIndex))
     }
   })
 }

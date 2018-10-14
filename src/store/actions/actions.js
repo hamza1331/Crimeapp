@@ -9,7 +9,14 @@ import {
     insertMissPerson,
     showComplain,
     hideComplain,
-    deleteComplain
+    deleteComplain,
+    showMissing,
+    hideMissing,
+    deleteMissing,
+    countURLS,
+    showAllMissing,
+    adminLogin,
+    adminLogout
 } from "./actionNames";
 
 
@@ -96,6 +103,60 @@ export function deleteComplainAction(complainId){
         dispatch({
             type:deleteComplain,
             payload:complainId
+        })
+    }
+}
+export function showMissingAction(missingDetail){
+    return dispatch=>{
+        dispatch({
+            type:showMissing,
+            payload:missingDetail
+        })
+    }
+}
+export function hideMissingAction(){
+    return dispatch=>{
+        dispatch({
+            type:hideMissing
+        })
+    }
+}
+export function deleteMissingAction(missingId){
+    return dispatch=>{
+        dispatch({
+            type:deleteMissing,
+            payload:missingId
+        })
+    }
+}
+export function countURLSAction(missingIndex){
+    return dispatch=>{
+        dispatch({
+            type:countURLS,
+            payload:missingIndex
+        })
+    }
+}
+export function showAllMissingAction(missing){
+    return dispatch=>{
+        dispatch({
+            type:showAllMissing,
+            payload:missing
+        })
+    }
+}
+export function adminLoginAction(uid){
+    return dispatch=>{
+        dispatch({
+            type:adminLogin,
+            payload:uid
+        })
+    }
+}
+export function adminLogoutAction(){
+    return dispatch=>{
+        dispatch({
+            type:adminLogout
         })
     }
 }

@@ -62,6 +62,7 @@ class Crimereport extends Component {
     let firebaseRef = firebase.database().ref('crimes').child(this.state.crimeId)
     let sendData = this.state
     delete sendData.showLoading
+    sendData.userId=this.props.uid
     firebaseRef.set(sendData).then(() => {
       let userRef = firebase.database().ref('userposts').child(this.props.uid)
       userRef.once('value', (snap) => {

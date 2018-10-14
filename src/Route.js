@@ -6,6 +6,9 @@ import Dashboard from './components/Dashboard'
 import Complain from './components/Complain'
 import Crimereport from './components/Crimereport'
 import Missing from './components/Missing'
+import Landing from './components/Landing'
+import AdminLogin from './components/AdminLogin'
+import Admin from './components/Admin'
 // import createBrowserHistory from 'history/createBrowserHistory'
 
 // const history = createBrowserHistory()
@@ -16,9 +19,12 @@ class Routers extends Component {
             <Router history={history}>
                 <div>
                     <Route path="/Dashboard" component={Dashboard} />
-                    <Route exact path="/" component={Home} />
+                    <Route exact path="/" component={Landing} />
+                    <Route path="/home" component={Home} />
                     <Route path="/complain" component={Complain} />
                     <Route path="/missing" component={Missing} />
+                    <Route path="/adminLogin" component={AdminLogin} />
+                    <Route path="/admin" component={Admin} />
                     <Route path="/crimereport" component={Crimereport} />
                 </div>
             </Router>

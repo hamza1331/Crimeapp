@@ -9,7 +9,12 @@ import {
     insertMissPerson,
     showComplain,
     hideComplain,
-    deleteComplain
+    deleteComplain,
+    showMissing,
+    hideMissing,
+    deleteMissing,
+    countURLS,
+    showAllMissing
 } from "../actions/actionNames";
 const initialState = {
     isLoggedIn: false,
@@ -20,7 +25,11 @@ const initialState = {
     complains: [],
     missingPersons: [],
     showComplainModal:false,
-    showComplain:{}
+    showComplain:{},
+    showMissingModal:false,
+    showMissing:{},
+    URLS:0,
+    allMissing:[]
 }
 
 export default (state = initialState, action) => {
@@ -90,6 +99,46 @@ export default (state = initialState, action) => {
         return{
             ...state,
             complains:updatedComplains
+        }
+        case showMissing:
+        if(action.payload.screen==='missing'){
+            return {
+                ...state,
+                showMissing:state.missingPersons[action.payload.index],
+                showMissingModal:true
+            }
+        }
+        else if(action.payload.screen==='home'){
+            return {
+                ...state,
+                showMissing:state.allMissing[action.payload.index],
+                showMissingModal:true
+            }
+        }
+        else
+        break;
+        case hideMissing:
+        return{
+            ...state,
+            showMissing:{},
+            showMissingModal:false
+        }
+        case deleteMissing:
+        let updatedMissing = state.missingPersons.filter((missing)=>missing.missingId!==action.payload)
+        return{
+            ...state,
+            missingPersons:updatedMissing
+        }
+        case countURLS:
+        let urls = state.missingPersons[action.payload].downlaodUrls.length
+        return{
+            ...state,
+            URLS:urls
+        }
+        case showAllMissing:
+        return{
+            ...state,
+            allMissing:[...state.allMissing,action.payload]
         }
         default:
             return state

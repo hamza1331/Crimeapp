@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux";
-import { LogoutAction,LoginAction} from "../store/actions/actions";
+import { LogoutAction,LoginAction,adminLogoutAction} from "../store/actions/actions";
 import firebase from 'firebase'
 class Navbar extends Component {
     constructor(props){
@@ -11,7 +11,7 @@ class Navbar extends Component {
         this.googleSignIn = this.googleSignIn.bind(this)
 
     }
-componentWillMount(){
+componentDidMount(){
      // Initialize Firebase
   if(!firebase.apps.length){
   var config = {
@@ -31,13 +31,19 @@ handleDashboardLink(e){
 }
     handleLogout(e){
         e.preventDefault()
-        firebase.auth().signOut().then(()=>{            
-            this.props.Logout()
-            this.props.history.push('/')
+        firebase.auth().signOut().then(()=>{     
+            if(this.props.isLoggedIn){
+                this.props.Logout()
+                this.props.history.push('/')
+            }
+            else if(this.props.adminLoggedIn){
+                this.props.adminLogout()
+                this.props.history.push('/adminLogin')
+            }       
         }).catch(err=>alert(err))
     }
     handleHomeLink(e){
-        if(window.location.pathname==='/'){
+        if(window.location.pathname==='/' ||window.location.pathname==='/admin'){
             e.preventDefault()
             return
         }
@@ -48,12 +54,12 @@ handleDashboardLink(e){
    const provider = new firebase.auth.GoogleAuthProvider();
         firebase.auth().signInWithPopup(provider).then((result)=>{
            var token = result.credential.accessToken;
+           console.log(token)
            var user = result.user;
            this.props.Login(user.uid)
             this.props.history.push('/Dashboard')
         }).catch(function(error) {
-           var errorCode = error.code;
-           var errorMessage = error.message;
+           
          console.log(error.code)
            console.log(error.message)
         });
@@ -66,9 +72,9 @@ handleDashboardLink(e){
             <a onClick={this.handleHomeLink} className="navbar-brand"><h3 style={{display:'inline',fontSize:30}}>My APP</h3></a>
           </div>
           <ul className="nav navbar-nav navbar-right">
-          {this.props.isLoggedIn && window.location.pathname!=='/Dashboard'&& <li><a href="#" onClick={this.handleDashboardLink}>Dashboard</a></li>}
-            {(this.props.isLoggedIn) && <button onClick={this.handleLogout} className="btn btn-danger navbar-btn">LOG OUT</button>}
-            {(!this.props.isLoggedIn) && <button onClick={this.googleSignIn} className="btn btn-info navbar-btn">LOGIN</button>}
+          {this.props.isLoggedIn && (window.location.pathname!=='/Dashboard'||window.location.pathname!=='/admin')&& <li><a href="#" onClick={this.handleDashboardLink}>Dashboard</a></li>}
+            {(this.props.isLoggedIn || this.props.adminLoggedIn) && <button onClick={this.handleLogout} className="btn btn-danger navbar-btn">LOG OUT</button>}
+            {(!this.props.isLoggedIn && !this.props.adminLoggedIn) && <button onClick={this.googleSignIn} className="btn btn-info navbar-btn">LOGIN</button>}
           </ul>
         </div>
       </nav>
@@ -78,7 +84,8 @@ handleDashboardLink(e){
 
 function mapStateToProps(state){
     return({
-        isLoggedIn:state.rootReducer.isLoggedIn
+        isLoggedIn:state.rootReducer.isLoggedIn,
+        adminLoggedIn:state.admin.adminLoggedIn
     })
 }
 
@@ -89,6 +96,9 @@ function mapActionsToProps(dispatch){
         },
         Login:(uid)=>{
             dispatch(LoginAction(uid))
+        },
+        adminLogout:()=>{
+            dispatch(adminLogoutAction())
         }
     })
 }

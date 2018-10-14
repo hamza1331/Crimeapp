@@ -57,6 +57,7 @@ class Complain extends Component {
     })
     let sendData = this.state
     delete sendData.showLoading
+    sendData.userId=this.props.uid
     let firebaseRef = firebase.database().ref('complaints').child(this.state.complainId)
     firebaseRef.set(sendData).then(() => {
       let userRef = firebase.database().ref('usercomplaints').child(this.props.uid)
