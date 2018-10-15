@@ -1,10 +1,28 @@
 import {
 adminLogin,
-adminLogout
+adminLogout,
+insertComplainAdmin,
+insertCrimeAdmin,
+insertMissingAdmin,
+deleteComplainAdmin,
+deleteCrimeAdmin,
+deleteMissingAdmin,
+showMissingAdmin,
+showComplainAdmin,
+showCrimenAdmin,
+hideComplainAdmin,
+hideCrimenAdmin,
+hideMissingAdmin
 } from "../actions/actionNames";
 const initialState = {
     adminLoggedIn:false,
-    uid:''
+    uid:'',
+    allComplains:[],
+    allCrimes:[],
+    allMissing:[],
+    showCrimeModal: false,
+    showComplainModal:false,
+    showMissingModal:false
 }
 
 export default (state = initialState, action) => {
@@ -20,6 +38,69 @@ export default (state = initialState, action) => {
             ...state,
             adminLoggedIn:false,
             uid:''
+        }
+        case insertComplainAdmin:
+        return{
+            ...state,
+            allComplains:[...state.allComplains,action.payload]
+        }
+        case insertMissingAdmin:
+        return{
+            ...state,
+            allMissing:[...state.allMissing,action.payload]
+        }
+        case insertCrimeAdmin:
+        return{
+            ...state,
+            allCrimes:[...state.allCrimes,action.payload]
+        }
+        case deleteComplainAdmin:
+        let updatedComplains = state.allComplains.filter((complain)=>complain.complainId!==action.payload)
+        return{
+            ...state,
+            allComplains:updatedComplains
+        }
+        case deleteMissingAdmin:
+        let updatedMissing = state.allMissing.filter((missing)=>missing.missingId!==action.payload)
+        return{
+            ...state,
+            allMissing:updatedMissing
+        }
+        case deleteCrimeAdmin:
+        let updatedCrimes = state.allCrimes.filter((crime)=>crime.crimeId!==action.payload)
+        return{
+            ...state,
+            allCrimes:updatedCrimes
+        }
+        case showComplainAdmin:
+        return{
+            ...state,
+            showComplainModal:true
+        }
+        case showMissingAdmin:
+        return{
+            ...state,
+            showMissingModal:true
+        }
+        case showCrimenAdmin:
+        return{
+            ...state,
+            showCrimeModal:true
+        }
+        case hideComplainAdmin:
+        return{
+            ...state,
+            showComplainModal:false
+        }
+        case hideCrimenAdmin:
+        return{
+            ...state,
+            showCrimeModal:false
+        }
+        case hideMissingAdmin:
+        return{
+            ...state,
+            showMissingModal:false
         }
         default:
             return state

@@ -8,8 +8,8 @@ class AdminLogin extends Component {
     constructor(props){
         super(props)
         this.initial={
-            email:'',
-            password:'',
+            email:'admin@crime.com',
+            password:'abc@123',
             showLoading:false
         }
         this.state={

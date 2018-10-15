@@ -51,6 +51,10 @@ handleDashboardLink(e){
     }
     googleSignIn()
     {
+        if(window.location.pathname==='/admin'){
+            this.props.history.push('/adminLogin')
+            return
+        }
    const provider = new firebase.auth.GoogleAuthProvider();
         firebase.auth().signInWithPopup(provider).then((result)=>{
            var token = result.credential.accessToken;

@@ -16,7 +16,19 @@ import {
     countURLS,
     showAllMissing,
     adminLogin,
-    adminLogout
+    adminLogout,
+    insertComplainAdmin,
+    insertCrimeAdmin,
+    insertMissingAdmin,
+    deleteComplainAdmin,
+    deleteCrimeAdmin,
+    deleteMissingAdmin,
+    showComplainAdmin,
+    showCrimenAdmin,
+    showMissingAdmin,
+    hideComplainAdmin,
+    hideCrimenAdmin,
+    hideMissingAdmin
 } from "./actionNames";
 
 
@@ -157,6 +169,96 @@ export function adminLogoutAction(){
     return dispatch=>{
         dispatch({
             type:adminLogout
+        })
+    }
+}
+export function insertMissingAdminAction(misperson){
+    return dispatch=>{
+        dispatch({
+            type:insertMissingAdmin,
+            payload:misperson
+        })
+    }
+}
+export function insertComplainAdminAction(complain){
+    return dispatch=>{
+        dispatch({
+            type:insertComplainAdmin,
+            payload:complain
+        })
+    }
+}
+export function insertReportAdminAction(crime){
+    return dispatch=>{
+        dispatch({
+            type:insertCrimeAdmin,
+            payload:crime
+        })
+    }
+}
+export function deleteCrimeAdminAction(crimeId){
+    return dispatch=>{
+        dispatch({
+            type:deleteCrimeAdmin,
+            payload:crimeId
+        })
+    }
+}
+export function deleteComplainAdminAction(complainId){
+    return dispatch=>{
+        dispatch({
+            type:deleteComplainAdmin,
+            payload:complainId
+        })
+    }
+}
+export function deleteMissingAdminAction(missingId){
+    return dispatch=>{
+        dispatch({
+            type:deleteMissingAdmin,
+            payload:missingId
+        })
+    }
+}
+export function showComplainAdminAction(){
+    return dispatch=>{
+        dispatch({
+            type:showComplainAdmin
+        })
+    }
+}
+export function showCrimeAdminAction(){
+    return dispatch=>{
+        dispatch({
+            type:showCrimenAdmin
+        })
+    }
+}
+export function showMissingAdminAction(){
+    return dispatch=>{
+        dispatch({
+            type:showMissingAdmin
+        })
+    }
+}
+export function hideCrimeAdminAction(){
+    return dispatch=>{
+        dispatch({
+            type:hideCrimenAdmin
+        })
+    }
+}
+export function hideComplainAdminAction(){
+    return dispatch=>{
+        dispatch({
+            type:hideComplainAdmin
+        })
+    }
+}
+export function hideMissingAdminAction(){
+    return dispatch=>{
+        dispatch({
+            type:hideMissingAdmin
         })
     }
 }
