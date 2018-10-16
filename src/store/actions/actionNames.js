@@ -28,6 +28,9 @@ const showMissingAdmin = 'SHOW_MISSING_ADMIN'
 const hideComplainAdmin = 'HIDE_COMPLAIN_ADMIN'
 const hideCrimenAdmin = 'HIDE_CRIME_ADMIN'
 const hideMissingAdmin = 'HIDE_MISSING_ADMIN'
+const updateReportStatus = 'UPDATE_REPORT_STATUS'
+const updateComplainStatus='UPDATE_COMPLAIN_STATUS'
+const updateMissingStatus='UPDATE_MISSING_STATUS'
 export{
     login,
     logout,
@@ -58,5 +61,8 @@ export{
     showMissingAdmin,
     hideComplainAdmin,
     hideCrimenAdmin,
-    hideMissingAdmin
+    hideMissingAdmin,
+    updateReportStatus,
+    updateMissingStatus,
+    updateComplainStatus
 }

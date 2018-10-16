@@ -28,7 +28,10 @@ import {
     showMissingAdmin,
     hideComplainAdmin,
     hideCrimenAdmin,
-    hideMissingAdmin
+    hideMissingAdmin,
+    updateReportStatus,
+    updateComplainStatus,
+    updateMissingStatus
 } from "./actionNames";
 
 
@@ -259,6 +262,30 @@ export function hideMissingAdminAction(){
     return dispatch=>{
         dispatch({
             type:hideMissingAdmin
+        })
+    }
+}
+export function updateReportStatusAction(updateDetails){
+    return dispatch=>{
+        dispatch({
+            type:updateReportStatus,
+            payload:updateDetails
+        })
+    }
+}
+export function updateComplainStatusAction(updateDetails){
+    return dispatch=>{
+        dispatch({
+            type:updateComplainStatus,
+            payload:updateDetails
+        })
+    }
+}
+export function updateMissingStatusAction(updateDetails){
+    return dispatch=>{
+        dispatch({
+            type:updateMissingStatus,
+            payload:updateDetails
         })
     }
 }

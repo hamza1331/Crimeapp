@@ -58,3 +58,17 @@ hr.style16:after {
   color: #8c8b8b;
   font-size: 18px;
 }
+.dlk-radio input[type="radio"],
+.dlk-radio input[type="checkbox"] 
+{
+	margin-left:-99999px;
+	display:none;
+}
+.dlk-radio input[type="radio"] + .fa ,
+.dlk-radio input[type="checkbox"] + .fa {
+     opacity:0.15
+}
+.dlk-radio input[type="radio"]:checked + .fa,
+.dlk-radio input[type="checkbox"]:checked + .fa{
+    opacity:1
+}

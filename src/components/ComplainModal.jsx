@@ -6,10 +6,12 @@ class ComplaintModal extends Component {
   constructor(props){
     super(props)
     this.onCloseModal = this.onCloseModal.bind(this)
+    
   }
   onCloseModal(){
     this.props.hideComplain()
   }
+ 
   render() {
     return (
       <div>
@@ -26,6 +28,7 @@ class ComplaintModal extends Component {
         <h3>Status of Application: <b>{this.props.Complain.status}</b></h3>
         <h3>NIC# of Applicant: <b>{this.props.Complain.NIC}</b></h3>
         <h3>Contact Info: <b>{this.props.Complain.contact}</b></h3>
+        
       </div>}
       </div>
         </Modal>

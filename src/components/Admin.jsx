@@ -27,7 +27,8 @@ class Admin extends Component {
       showDeleteLoading:false,
       Crime:{},
       Complain:{},
-      Missing:{}
+      Missing:{},
+      index:0
     }
   }
   componentDidMount(){
@@ -48,7 +49,8 @@ class Admin extends Component {
     e.preventDefault()
     let crime = this.props.allCrimes[e.target.id]
     this.setState({
-      Crime:crime
+      Crime:crime,
+      index:e.target.id
     })
     this.props.showCrime()
   }
@@ -56,7 +58,8 @@ class Admin extends Component {
     e.preventDefault()
     let complain = this.props.allComplains[e.target.id]
     this.setState({
-      Complain:complain
+      Complain:complain,
+      index:e.target.id
     })
     this.props.showComplain()
   }
@@ -64,7 +67,8 @@ class Admin extends Component {
     e.preventDefault()
     let missing = this.props.allMissing[e.target.id]
     this.setState({
-      Missing:missing
+      Missing:missing,
+      index:e.target.id
     })
     this.props.showMissing()
   }
@@ -240,6 +244,7 @@ class Admin extends Component {
                    {!this.state.showDeleteLoading&&<button id={crime.crimeId} onClick={this.handleRemoveCrime} className='btn btn-xs btn-danger'> Delete</button>}
                    {this.state.showDeleteLoading && <button id={index} className='btn btn-xs btn-danger'><img style={{width:'0.9em'}} src={Loading} alt="Not found"/></button>}
                    
+      
                    </span>
                    </li><br/>
                   </div>
@@ -248,9 +253,9 @@ class Admin extends Component {
             </div>}
             <br/><br/>
        
-            <MissingModal Missing={this.state.Missing}/>
-            <ComplainModal Complain={this.state.Complain}/>
-            <CrimeModal Crime={this.state.Crime}/>
+           {this.props.showMissingModal&&<MissingModal index={this.state.index} Missing={this.state.Missing}/>}
+           {this.props.showComplainModal&&<ComplainModal index={this.state.index} Complain={this.state.Complain}/>}
+           {this.props.showCrimeModal&&<CrimeModal index={this.state.index} Crime={this.state.Crime}/>} 
         </div>
       }
       </div>
@@ -263,7 +268,10 @@ function mapStateToProps(state) {
     isLoggedIn:state.admin.adminLoggedIn,
     allComplains:state.admin.allComplains,
     allCrimes:state.admin.allCrimes,
-    allMissing:state.admin.allMissing
+    allMissing:state.admin.allMissing,
+    showCrimeModal: state.admin.showCrimeModal,
+    showComplainModal:state.admin.showComplainModal,
+    showMissingModal:state.admin.showMissingModal
   })
 }
 

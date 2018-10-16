@@ -12,7 +12,10 @@ showComplainAdmin,
 showCrimenAdmin,
 hideComplainAdmin,
 hideCrimenAdmin,
-hideMissingAdmin
+hideMissingAdmin,
+updateReportStatus,
+updateComplainStatus,
+updateMissingStatus
 } from "../actions/actionNames";
 const initialState = {
     adminLoggedIn:false,
@@ -101,6 +104,27 @@ export default (state = initialState, action) => {
         return{
             ...state,
             showMissingModal:false
+        }
+        case updateReportStatus:
+        let newReports=state.allCrimes
+        newReports[action.payload.updateIndex].status=action.payload.status
+        return{
+            ...state,
+            allCrimes:newReports
+        }
+        case updateComplainStatus:
+        let newComplains=state.allComplains
+        newComplains[action.payload.updateIndex].status=action.payload.status
+        return{
+            ...state,
+            allComplains:newComplains
+        }
+        case updateMissingStatus:
+        let newMissing=state.allMissing
+        newMissing[action.payload.updateIndex].status=action.payload.status
+        return{
+            ...state,
+            allMissing:newMissing
         }
         default:
             return state
