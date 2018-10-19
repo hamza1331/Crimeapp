@@ -65,13 +65,13 @@ class AdminLogin extends Component {
     render() {
         return (
             <div>
-<div className="jumbotron">
-  <div className="container">
+<div className="jumbotronn">
+  <div className="containerr">
     <span className="glyphicon glyphicon-list-alt"></span>
-    <h2>Admin Login</h2>
-    <div className="box">
-        <input name='email' onChange={this.handleChange} value={this.state.email} autoFocus='true' type="email" autoComplete='off' required={true} placeholder="email"/>
-	    <input name="password" value={this.state.password} onChange={this.handleChange} type="password" required={true} placeholder="password"/>
+    <h2 className='head2'>Admin Login</h2>
+    <div className="boxx">
+        <input className='adminInput' name='email' onChange={this.handleChange} value={this.state.email} autoFocus='true' type="email" autoComplete='off' required={true} placeholder="email"/>
+	    <input className='adminInput' name="password" value={this.state.password} onChange={this.handleChange} type="password" required={true} placeholder="password"/>
         {!this.state.showLoading&&<button className="btn btn-warning btn-xlarge" onClick={this.handleSubmit}>LOGIN <span className="glyphicon glyphicon-ok"></span></button>}   
         {this.state.showLoading &&<button type='submit' className='btn btn-warning btn-xlarge'><img style={{width:"60%"}} src={Loading} alt="NOt found"/></button>}
          </div>

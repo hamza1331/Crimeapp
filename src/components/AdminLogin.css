@@ -3,7 +3,7 @@ Inspired by http://dribbble.com/shots/917819-iPad-Calendar-Login?list=shots&sort
 */
 
 
-.jumbotron {
+.jumbotronn {
 	text-align: center;
 	width: 30rem;
 	border-radius: 0.5rem;
@@ -18,13 +18,13 @@ Inspired by http://dribbble.com/shots/917819-iPad-Calendar-Login?list=shots&sort
 	border-radius: 15px;
 }
 
-.container .glyphicon-list-alt {
+.containerr .glyphicon-list-alt {
 	font-size: 10rem;
 	margin-top: 3rem;
 	color: #ca8608;
 }
 
-input {
+.adminInput {
 	width: 100%;
 	margin-bottom: 1.4rem;
 	padding: 1rem;
@@ -32,7 +32,7 @@ input {
 	border-radius: 0.2rem;
 	border: none;
 }
-h2 {
+.head2 {
 	margin-bottom: 3rem;
 	font-weight: bold;
 	color: #ababab;
@@ -55,7 +55,7 @@ h2 {
 	border-bottom-right-radius: 0;
 }
 
-.box {
+.boxx {
 	position: absolute;
 	bottom: 0;
 	left: 0;

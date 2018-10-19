@@ -38,15 +38,19 @@ handleDashboardLink(e){
             }
             else if(this.props.adminLoggedIn){
                 this.props.adminLogout()
-                this.props.history.push('/adminLogin')
+                this.props.history.push('/')
             }       
         }).catch(err=>alert(err))
     }
     handleHomeLink(e){
-        if(window.location.pathname==='/' ||window.location.pathname==='/admin'){
+        let pathname=window.location.pathname
+        if(pathname==='/' ||pathname==='/admin'){
             e.preventDefault()
             return
         }
+        else if(pathname==='/Dashboard'||pathname==='/complain'||pathname==='/missing'||pathname==='/crimereport')
+        this.props.history.push('/home')
+        else
         this.props.history.push('/')
     }
     googleSignIn()
@@ -73,10 +77,10 @@ handleDashboardLink(e){
         <nav className="navbar navbar-inverse navbar-fixed-top">
         <div className="container-fluid">
           <div className="navbar-header">
-            <a onClick={this.handleHomeLink} className="navbar-brand"><h3 style={{display:'inline',fontSize:30}}>My APP</h3></a>
+            <a href='#df' onClick={this.handleHomeLink} className="navbar-brand"><h3 style={{display:'inline',fontSize:30}}>My APP</h3></a>
           </div>
           <ul className="nav navbar-nav navbar-right">
-          {this.props.isLoggedIn && (window.location.pathname!=='/Dashboard'||window.location.pathname!=='/admin')&& <li><a href="#" onClick={this.handleDashboardLink}>Dashboard</a></li>}
+          {this.props.isLoggedIn && (window.location.pathname!=='/Dashboard'||window.location.pathname!=='/admin')&& <li><a href="#ef" onClick={this.handleDashboardLink}>Dashboard</a></li>}
             {(this.props.isLoggedIn || this.props.adminLoggedIn) && <button onClick={this.handleLogout} className="btn btn-danger navbar-btn">LOG OUT</button>}
             {(!this.props.isLoggedIn && !this.props.adminLoggedIn) && <button onClick={this.googleSignIn} className="btn btn-info navbar-btn">LOGIN</button>}
           </ul>

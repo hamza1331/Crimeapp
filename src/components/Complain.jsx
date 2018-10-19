@@ -34,7 +34,7 @@ class Complain extends Component {
     })
   }
   componentDidMount(){
-    if (this.props.isLoggedIn) {
+    if (this.props.isLoggedIn&&this.props.Complains.length===0) {
       let firebaseRef = firebase.database().ref('usercomplaints').child(this.props.uid)
       firebaseRef.once('value', snap => {
         const posts = snap.val()
@@ -180,11 +180,11 @@ class Complain extends Component {
             <div className="col-md-3">
             <h2 className='text-info' style={{ textAlign: 'center', textDecoration: 'underline' }}>COMPLAINS</h2>
             <ul className="list-group">
-            {this.props.Complains.map((complain,index)=>{
+            {this.props.Complains.length>0&&this.props.Complains.map((complain,index)=>{
               return  <div 
               key={index}>
                  <li className='list-group-item list-group-item-info'>
-               <a href="#" id={index} onClick={e=>this.props.showComplain(e.target.id)}>{complain.title}</a>
+               <a href="#comp" id={index} onClick={e=>this.props.showComplain(e.target.id)}>{complain.title}</a>
                <span className='pull-right'>
                <button id={index} onClick={this.handleRemove} className='btn btn-xs btn-danger'> Delete</button>
                </span>

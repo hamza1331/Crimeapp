@@ -186,7 +186,9 @@ class Admin extends Component {
           <Navbar history={this.props.history}/>
           <br/>
           <br/>
+    {/*eslint-disable-next-line*/}
         {!this.props.isLoggedIn&& <h1 className='container' style={{marginTop:screen.height/10}}>User Must Login</h1>}
+    {/*eslint-disable-next-line*/}    
         {this.props.isLoggedIn&& <div className='container' style={{marginTop:screen.height/10}}>
       {this.state.showLoading&&<div><center><img src={Loading} alt="NOt found"/></center></div>}  
       
@@ -196,8 +198,8 @@ class Admin extends Component {
                 {this.props.allMissing.map((missing,index)=>{
                   return <div 
                   key={missing.missingId}>
-                     <li
-                   style={{width:screen.width*0.8}}
+    {/*eslint-disable-next-line*/}
+                     <li  style={{width:screen.width*0.8}}
                    className='list-group-item list-group-item-info'>
                    <a href="#get" id={index} onClick={this.handleShowMissing}>{missing.title}</a>
                    <span className='pull-right'>
@@ -216,8 +218,8 @@ class Admin extends Component {
                 {this.props.allComplains.map((complain,index)=>{
                   return <div 
                   key={complain.complainId}>
-                     <li
-                   style={{width:screen.width*0.8}}
+    {/*eslint-disable-next-line*/}                     
+                     <li style={{width:screen.width*0.8}}
                    className='list-group-item list-group-item-info'>
                    <a href="#get" id={index} onClick={this.handleShowComplain}>{complain.title}</a>
                    <span className='pull-right'>
@@ -236,8 +238,8 @@ class Admin extends Component {
                 {this.props.allCrimes.map((crime,index)=>{
                   return <div 
                   key={crime.crimeId}>
-                     <li
-                   style={{width:screen.width*0.8}}
+    {/*eslint-disable-next-line*/}
+                     <li style={{width:screen.width*0.8}}
                    className='list-group-item list-group-item-info'>
                    <a href="#get" id={index} onClick={this.handleShowCrime}>{crime.title}</a>
                    <span className='pull-right'>

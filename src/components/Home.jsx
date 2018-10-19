@@ -37,7 +37,7 @@ class Home extends Component {
            <Navbar history={this.props.history}/>
             <br/><br/><br/>
             <div className='row container'>
-            <h1 style={{textAlign:'center',textDecoration:'underline'}} classNames='text-info'>MISSING PERSONS</h1><hr className='style16'/><br/>
+            <h1 style={{textAlign:'center',textDecoration:'underline'}} className='text-info'>MISSING PERSONS</h1><hr className='style16'/><br/>
             {this.props.allMissing && this.props.allMissing.map((missing,index)=>{
                 return <div key={missing.missingId}>
                 <div className="col-md-3">

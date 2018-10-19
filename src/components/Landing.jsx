@@ -51,11 +51,11 @@ export default class Landing extends Component {
       // </div>
       //       </div>
       <div>
-        <div className="jumbotron">
-          <div className="container">
+        <div className="jumbotronn">
+          <div className="containerr">
             <span className="glyphicon glyphicon-list-alt"></span>
-            <h2>CRIME APP</h2>
-            <div className="box">
+            <h2 className='head2'>CRIME APP</h2>
+            <div className="boxx">
             <div className='text-center'><button name='admin' onClick={this.navigate} className="btn btn-xlarge btn-warning">ENTER AS ADMIN</button></div><br/>
             <div className='text-center'><button name='visitor' onClick={this.navigate} className="btn btn-xlarge btn-primary">ENTER AS VISITOR</button></div>
             </div>

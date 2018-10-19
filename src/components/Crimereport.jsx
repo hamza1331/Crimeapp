@@ -36,7 +36,7 @@ class Crimereport extends Component {
     })
   }
   componentDidMount() {
-    if (this.props.isLoggedIn) {
+    if (this.props.isLoggedIn&&this.props.Crimes.length===0) {
       let firebaseRef = firebase.database().ref('userposts').child(this.props.uid)
       firebaseRef.once('value', snap => {
         const posts = snap.val()
@@ -44,6 +44,7 @@ class Crimereport extends Component {
           let dataRef = firebase.database().ref('crimes').child(post)
           dataRef.once('value', snapshot => {
             let crime = snapshot.val()
+            console.log(crime)
             this.props.insertCrime(crime)
           })
         })
@@ -189,12 +190,12 @@ class Crimereport extends Component {
             <div className="col-md-3">
               <h2 className='text-info' style={{ textAlign: 'center', textDecoration: 'underline' }}>CRIMES</h2>
               <ul className="list-group">
-                {this.props.Crimes.map((crime, index) => {
+                {this.props.Crimes.length>0 && this.props.Crimes.map((crime, index) => {
                   return <div
                     key={index}>
                     <li
                       className='list-group-item list-group-item-info'>
-                      <a href="#" id={index} onClick={this.showDetails}>{crime.title}</a>
+                      <a href="#crm" id={index} onClick={this.showDetails}>{crime.title}</a>
                       <span className='pull-right'>
                         <button id={index} onClick={this.handleRemove} className='btn btn-xs btn-danger'> Delete</button>
                       </span>

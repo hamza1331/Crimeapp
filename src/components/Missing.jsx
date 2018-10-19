@@ -45,7 +45,7 @@ class Missing extends Component {
     })
   }
   componentDidMount(){
-    if (this.props.isLoggedIn) {
+    if (this.props.isLoggedIn&&this.props.missingPersons.length===0) {
       let firebaseRef = firebase.database().ref('usermissingper').child(this.props.uid)
       firebaseRef.once('value', snap => {
         const posts = snap.val()
@@ -300,12 +300,12 @@ class Missing extends Component {
             <div className="col-md-3"></div>
             <div className="col-md-3">
               <ul className="list-group">
-                {this.props.missingPersons.map((missPerson, index) => {
+                {this.props.missingPersons.length>0&&this.props.missingPersons.map((missPerson, index) => {
                   return <div
                     key={index}>
                     <li
                       className='list-group-item list-group-item-info'>
-                      <a href="#" id={index} onClick={this.showMissingMethod}>{missPerson.title}</a>
+                      <a href="#miss" id={index} onClick={this.showMissingMethod}>{missPerson.title}</a>
                       <span className='pull-right'>
                         <button id={index} onClick={this.handleRemove} className='btn btn-xs btn-danger'> Delete</button>
                       </span>

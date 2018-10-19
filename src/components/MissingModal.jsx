@@ -19,9 +19,9 @@ class MissngModal extends Component {
             {this.props.Missing && <div className="wrapper">
               <h1 className='text-info' style={{ textAlign: 'center', textDecoration: 'underline' }}>{this.props.Missing.title}</h1>
               {this.props.Missing.downlaodUrls && <Carousel autoPlay={true}>
-                {this.props.Missing.downlaodUrls.map((image, index) => {
+                {this.props.Missing.downlaodUrls.length>0&&this.props.Missing.downlaodUrls.map((image, index) => {
                   return <Carousel.Item key={index}>
-                    <a href={image} target='_blank'> <img className='img-responsive' height={200} alt="900x500" src={image} /></a>
+                    <a href={image}  rel="noopener noreferrer" target='_blank'> <img className='img-responsive' height={200} alt="900x500" src={image} /></a>
                   </Carousel.Item>
                 })}
               </Carousel>}
